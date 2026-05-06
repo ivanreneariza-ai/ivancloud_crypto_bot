@@ -9,6 +9,7 @@ from agents.technical_agent import TechnicalAgent
 from agents.sentiment_agent import SentimentAgent
 from agents.liquidity_agent import LiquidityAgent
 from agents.leverage_agent import LeverageAgent
+from agents.volatility_agent import VolatilityAgent
 from agents.deepseek_agent import DeepSeekAgent
 from utils.notifier import TelegramNotifier
 
@@ -27,7 +28,8 @@ def main():
         TechnicalAgent(),
         SentimentAgent(),
         LiquidityAgent(),
-        LeverageAgent()
+        LeverageAgent(),
+        VolatilityAgent()
     ]
     
     # Inicializar Agente Cerebro (DeepSeek)
