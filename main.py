@@ -4,7 +4,7 @@ try:
     import config
 except ImportError:
     config = None
-from agents.whale_agent import WhaleAgent
+from agents.technical_agent import TechnicalAgent
 from agents.sentiment_agent import SentimentAgent
 from agents.liquidity_agent import LiquidityAgent
 from agents.deepseek_agent import DeepSeekAgent
@@ -22,7 +22,7 @@ def main():
 
     # Inicializar agentes recolectores
     collectors = [
-        WhaleAgent(),
+        TechnicalAgent(),
         SentimentAgent(),
         LiquidityAgent()
     ]
