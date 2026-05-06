@@ -1,0 +1,8 @@
+# Ignorar archivos de configuracion local y secretos
+config.py
+utils/.env
+__pycache__/
+*.pyc
+.env
+.venv/
+env/
