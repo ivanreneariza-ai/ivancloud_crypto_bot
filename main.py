@@ -1,5 +1,6 @@
 import time
 import os
+import json
 try:
     import config
 except ImportError:
@@ -58,8 +59,48 @@ def main():
     else: 
         decision_text = "MERCADO NEUTRAL"; emoji = "⚪"
 
-    # Construir reporte OPTIMIZADO para Telegram (Recomendacion ARRIBA)
-    telegram_report = f"🚀 *RECOMENDACION:* {emoji} {decision_text}\n\n"
+    # --- LOGICA DE MEMORIA Y VALIDACION ---
+    memory_file = "memory.json"
+    last_data = {}
+    if os.path.exists(memory_file):
+        try:
+            with open(memory_file, 'r') as f:
+                last_data = json.load(f)
+        except: pass
+
+    # Extraer precio preciso del reporte del Agente Tecnico
+    import re
+    current_price = 0
+    match = re.search(r'\$(\d+,?\d*\.?\d*)', report_summary)
+    if match:
+        current_price = float(match.group(1).replace(',', ''))
+
+    validation_msg = ""
+    if last_data and current_price > 0:
+        last_price = last_data.get('price', 0)
+        last_rec = last_data.get('recommendation', 'N/A')
+        
+        if last_price > 0:
+            diff_pct = ((current_price - last_price) / last_price) * 100
+            trend = "SUBIO" if diff_pct > 0 else "BAJO"
+            
+            # Evaluar si la recomendacion fue acertada
+            success = False
+            if "COMPRA" in last_rec and diff_pct > 0: success = True
+            elif "VENTA" in last_rec and diff_pct < 0: success = True
+            elif "NEUTRAL" in last_rec and abs(diff_pct) < 0.05: success = True
+            
+            status = "✅ ACERTADA" if success else "❌ FALLIDA"
+            validation_msg = f"🎯 **VALIDACION:** El precio {trend} un {abs(diff_pct):.4f}%. Recomendación anterior ({last_rec}) fue {status}.\n\n"
+
+    # Guardar memoria para la proxima ejecucion
+    with open(memory_file, 'w') as f:
+        json.dump({'price': current_price, 'recommendation': decision_text}, f)
+
+    # Construir reporte FINAL
+    telegram_report = f"🚀 *RECOMENDACION:* {emoji} {decision_text}\n"
+    telegram_report += f"💰 *Precio Precise:* ${current_price:,.2f}\n\n"
+    telegram_report += validation_msg
     telegram_report += f"🧠 *IA:* {ai_analysis}\n\n"
     telegram_report += f"📊 *DETALLE:*\n{report_summary}"
 
