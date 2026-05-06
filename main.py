@@ -1,5 +1,9 @@
 import time
-import config
+import os
+try:
+    import config
+except ImportError:
+    config = None
 from agents.whale_agent import WhaleAgent
 from agents.sentiment_agent import SentimentAgent
 from agents.liquidity_agent import LiquidityAgent
@@ -11,8 +15,10 @@ def main():
     print(" INICIANDO CLOUD CRYPTO BOT (Analisis Inteligente)")
     print("==================================================")
 
-    # Inicializar Notificador
-    notifier = TelegramNotifier(config.TELEGRAM_TOKEN, config.TELEGRAM_CHAT_ID)
+    # Inicializar Notificador (Prioridad: Config local -> Env Var)
+    token = getattr(config, 'TELEGRAM_TOKEN', os.environ.get('TELEGRAM_TOKEN'))
+    chat_id = getattr(config, 'TELEGRAM_CHAT_ID', os.environ.get('TELEGRAM_CHAT_ID'))
+    notifier = TelegramNotifier(token, chat_id)
 
     # Inicializar agentes recolectores
     collectors = [
