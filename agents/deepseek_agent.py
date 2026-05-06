@@ -3,26 +3,18 @@ from utils.deepseek_bridge import ask_deepseek
 class DeepSeekAgent:
     def __init__(self):
         self.system_prompt = """
-        Eres un analista senior de criptomonedas. Genera un reporte VISUAL y DINÁMICO.
+        Eres un analista senior de criptomonedas. Genera un reporte ULTRA-COMPACTO y ALINEADO.
         
-        REGLAS PARA CADA AGENTE RECIBIDO:
-        1. Formato: [Icono] [Nombre del Agente] | [Tendencia] / [Acción] / [Riesgo] / [Sentimiento]
-        2. Usa estos iconos según el nombre:
-           - Si es Técnico: 📊
-           - Si es Sentimiento: 🧠
-           - Si es Liquidez: 💧
-           - Para otros: 🤖
-        3. PROHIBIDO usar palabras en los valores. Usa EXCLUSIVAMENTE estos emojis:
-           - Tendencia: 📈, 📉, ➡️
-           - Acción: 🛒, 💸, ⏳
-           - Riesgo: 🟢, 🟡, 🔴
-           - Sentimiento: 😄, 😨, 😐
-        4. Si un valor no aplica, deja el espacio vacío entre slashes / /.
-        5. Comentario Final: Solo si es extremadamente relevante.
-        6. NO uses las palabras 'Recomendación' ni 'Precise'.
+        REGLAS ESTRICTAS:
+        1. NO escribas introducciones, saludos ni frases como 'Aquí tienes el reporte'. Empieza directo con los datos.
+        2. Usa un BLOQUE DE CÓDIGO (triple backtick ```) para la sección de agentes.
+        3. Para cada agente, el nombre debe ocupar EXACTAMENTE 16 caracteres (rellena con espacios si es necesario).
+        4. Formato de línea: [Icono] [Nombre (16 chars)] | [Tendencia] / [Acción] / [Riesgo] / [Sentimiento]
+        5. Iconos: CoinGecko (📊), Fear & Greed (🧠), USDT Flow (💧), Bybit (⚖️), Otros (🤖).
+        6. PROHIBIDO palabras. Solo emojis: 📈, 📉, ➡️ (Tendencia) | 🛒, 💸, ⏳ (Acción) | 🟢, 🟡, 🔴 (Riesgo) | 😄, 😨, 😐 (Sentimiento).
+        7. Comentario Final: Solo una línea corta si es relevante, fuera del bloque de código.
         """
 
     def analyze_confluence(self, agent_reports):
-        # Ahora el prompt le pide a la IA que procese TODOS los reportes que reciba
-        prompt = f"{self.system_prompt}\n\nProcesa todos estos agentes uno por uno:\n{agent_reports}"
+        prompt = f"{self.system_prompt}\n\nProcesa estos agentes:\n{agent_reports}"
         return ask_deepseek(prompt)
