@@ -90,14 +90,14 @@ def main():
             elif "NEUTRAL" in last_rec and abs(diff_pct) < 0.05: success = True
             
             status_emoji = "✅" if success else "❌"
-            validation_msg = f"🎯 {trend_emoji} {abs(diff_pct):.4f}% {status_emoji}\n"
+            validation_msg = f"🎯 {last_price:,.0f} | {trend_emoji} {abs(diff_pct):.4f}% | {current_price:,.0f} {status_emoji}\n"
 
     # Guardar memoria para la proxima ejecucion
     with open(memory_file, 'w') as f:
         json.dump({'price': current_price, 'recommendation': decision_text}, f)
 
-    # Construir reporte FINAL (ULTRA-SIMPLIFICADO)
-    telegram_report = f"🚀 {emoji} {decision_text} | 💰 ${current_price:,.2f}\n"
+    # Construir reporte FINAL (VISUAL DASHBOARD)
+    telegram_report = f"🚀 {emoji} {decision_text}\n"
     telegram_report += validation_msg
     telegram_report += f"{ai_analysis}"
 

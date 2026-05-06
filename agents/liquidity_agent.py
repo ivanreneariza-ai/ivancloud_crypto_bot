@@ -4,7 +4,7 @@ import json
 
 class LiquidityAgent(BaseAgent):
     def __init__(self):
-        super().__init__("Agente de Liquidez (USDT Flow)")
+        super().__init__("USDT Flow")
         self.url = "https://api.coingecko.com/api/v3/coins/tether?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false"
 
     def analyze(self):

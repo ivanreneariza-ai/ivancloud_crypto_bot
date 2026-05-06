@@ -4,7 +4,7 @@ import json
 
 class SentimentAgent(BaseAgent):
     def __init__(self):
-        super().__init__("Agente de Sentimiento (Fear & Greed API)")
+        super().__init__("Fear & Greed")
 
     def analyze(self):
         # API REAL Y GRATUITA

@@ -4,7 +4,7 @@ import json
 
 class TechnicalAgent(BaseAgent):
     def __init__(self, symbol="bitcoin"):
-        super().__init__("Agente Tecnico (CoinGecko Real-Time)")
+        super().__init__("CoinGecko")
         self.symbol = symbol
         self.url = f"https://api.coingecko.com/api/v3/coins/{self.symbol}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false"
 
