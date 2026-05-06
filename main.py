@@ -91,18 +91,17 @@ def main():
             elif "NEUTRAL" in last_rec and abs(diff_pct) < 0.05: success = True
             
             status = "✅ ACERTADA" if success else "❌ FALLIDA"
-            validation_msg = f"🎯 **VALIDACION:** El precio {trend} un {abs(diff_pct):.4f}%. Recomendación anterior ({last_rec}) fue {status}.\n\n"
+            validation_msg = f"🎯 **VALIDACION:** El precio {trend} un {abs(diff_pct):.4f}%. Señal anterior ({last_rec}) fue {status}.\n\n"
 
     # Guardar memoria para la proxima ejecucion
     with open(memory_file, 'w') as f:
         json.dump({'price': current_price, 'recommendation': decision_text}, f)
 
-    # Construir reporte FINAL
-    telegram_report = f"🚀 *RECOMENDACION:* {emoji} {decision_text}\n"
-    telegram_report += f"💰 *Precio Precise:* ${current_price:,.2f}\n\n"
+    # Construir reporte FINAL (SIMPLIFICADO)
+    telegram_report = f"🚀 {emoji} {decision_text}\n"
+    telegram_report += f"💰 Bitcoin: ${current_price:,.2f}\n"
     telegram_report += validation_msg
-    telegram_report += f"🧠 *IA:* {ai_analysis}\n\n"
-    telegram_report += f"📊 *DETALLE:*\n{report_summary}"
+    telegram_report += f"\n{ai_analysis}"
 
     print("\n==================================================")
     print(f" Sugerencia: {decision_text}")

@@ -1,24 +1,20 @@
-from .base_agent import BaseAgent
-from utils.deepseek_bridge import load_env, ask_deepseek
+from utils.deepseek_bridge import ask_deepseek
 
-class DeepSeekAgent(BaseAgent):
+class DeepSeekAgent:
     def __init__(self):
-        super().__init__("Analista Inteligente (DeepSeek)")
-
-    def analyze_confluence(self, all_reports):
-        """
-        Este agente recibe el reporte de los demás y genera una conclusión de alto nivel.
-        """
-        prompt = f"""Analiza esta confluencia de datos cripto y dame un resumen ejecutivo MUY CORTO (máximo 200 caracteres):
-{all_reports}
-
-Estructura: 
-1. Tendencia. 2. Acción sugerida. 3. Riesgo.
-Sé ultra-directo y profesional."""
+        self.system_prompt = """
+        Eres un analista senior de criptomonedas. Tu objetivo es resumir reportes de agentes en una TABLA técnica para Telegram.
         
-        try:
-            load_env() # Carga la API KEY desde el .env que copiamos a la carpeta utils
-            response = ask_deepseek(prompt)
-            return response
-        except Exception as e:
-            return f"Error al consultar al analista DeepSeek: {str(e)}"
+        REGLAS DE FORMATO:
+        1. NO uses las palabras 'Recomendación' ni 'Precise'.
+        2. Crea una TABLA en texto monospaciado (usando triple backtick ```) con estas columnas:
+           Agente | Tendencia | Acción | Riesgo | Sentimiento
+        3. Si un valor no aplica, déjalo en blanco.
+        4. Al final, si hay algún hecho muy significativo, agrégalo como un comentario corto.
+        5. La respuesta debe empezar directamente con la tabla.
+        6. Sé extremadamente breve.
+        """
+
+    def analyze_confluence(self, agent_reports):
+        prompt = f"{self.system_prompt}\n\nAnaliza estos reportes y genera la tabla:\n{agent_reports}"
+        return ask_deepseek(prompt)

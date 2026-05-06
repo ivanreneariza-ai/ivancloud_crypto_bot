@@ -16,9 +16,11 @@ def load_env():
                         os.environ[key.strip()] = val.strip()
 
 def ask_deepseek(prompt):
+    # Intentar cargar .env si existe (entorno local)
+    load_env()
     api_key = os.environ.get('DEEPSEEK_API_KEY')
     if not api_key:
-        return "Error: DEEPSEEK_API_KEY no encontrada en variables de entorno."
+        return "Error: DEEPSEEK_API_KEY no encontrada."
 
     url = "https://api.deepseek.com/v1/chat/completions"
     headers = {
